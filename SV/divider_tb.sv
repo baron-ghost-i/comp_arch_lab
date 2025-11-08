@@ -2,24 +2,33 @@
 
 module divider_tb();
 
-    reg [3:0] A = 4'b0000;
-    reg [3:0] B = 4'b0000;
-    reg signed [3:0] sA = 4'b0000;
-    reg signed [3:0] sB = 4'b0000;
-
-    wire [7:0] P;
-    wire signed [7:0] sP;
-    divider #(.N(4)) DUT(.A(A), .B(B), .P(P));
-    divider #(.N(4)) sDUT(.A(A), .B(B), .P(sP));
+    reg [7:0] dividend = 8'd225;
+    reg [7:0] divisor = (8'd0);
+    wire [7:0] quotient;
+    wire [7:0] remainder;
+    reg clk = 1'b1;
+    reg rst = 1'b1;
+    wire done, error;
 
     initial begin
-        $monitor("A: %d (%d), B: %d (%d), P: %d (%d)", A, sA, B, sB, P, sP);
-        for(integer i=0; i<16; i=i+1) begin
-            for(integer j=0; j<16; j=j+1) begin
-                #1 A <= i; B <= j; sA <= i; sB <= j;
-            end
+        $monitor("%d %d %d %d\tError: %b", divisor, dividend, quotient, remainder, error);
+    end
+
+    initial begin
+        forever begin
+            #0.5 clk = ~clk;
         end
-    #1 $finish;
+    end
+
+    // divider #(.ldvn(8), .ldvr(8), .lqtn(8), .lrem(8)) dut (.clk(clk), .rst(rst), .dividend(dividend), .divisor(divisor), .quotient(quotient), .remainder(remainder), .done(done), .error(error), .dvsr_debug(dvsr_debug));
+
+    divider #(.N(8)) dut(.clk(clk), .rst(rst), .divisor(divisor), .dividend(dividend), .quotient(quotient), .remainder(remainder), .done(done), .error(error));
+
+    initial begin
+        #1 rst = 1'b1;
+        #1 rst = 1'b0;
+        #1 rst = 1'b1;
+        #1000 $finish;
     end
 
 endmodule
