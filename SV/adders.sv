@@ -44,5 +44,7 @@ module RCA_SUB #(
     output Bout
 );
     wire [N-1:0] B_comp = ~B;
-    RCA #(.N(N)) rca(.A(A), .B(B_comp), .Cin(1'b1), .S(D), .Cout(Bout));
+    wire temp;
+    assign Bout = ~temp;
+    RCA #(.N(N)) rca(.A(A), .B(B_comp), .Cin(~Bin), .S(D), .Cout(temp));
 endmodule
