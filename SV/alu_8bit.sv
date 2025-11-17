@@ -10,10 +10,9 @@ module ALU_8bit (
 	*/
 	input	[3:0]	ALU_cont,
 	input	[7:0]	A, B,
-	input		Cin,	// acts as dual for B_in when subtracting
+	input		Cin,
 	output	[7:0] 	X,
-	output		Zero,
-	output		Cout	// acts as dual for B_out when subtracting
+	output		Zero, Overflow, Cout
 );
 
 	wire z0, z1, carry, slt;
@@ -24,11 +23,12 @@ module ALU_8bit (
 	assign overflow = (A[7]^B[7])&(A[7]^X_pre[7]);
 	
 	// hard-coding ALU_cont so that alu operation xx11 leads to xx10, where it will be processed further.
-	ALU lsb(.ALU_cont({ALU_cont[3:1], (~ALU_cont[1])&ALU_cont[0]}), .A(A[3:0]), .B(B[3:0]), .Cin(Cin), .X(X_pre[3:0]), .Zero(z0), .Cout(carry), .Overflow(ov[1])); 
-	ALU msb(.ALU_cont({ALU_cont[3:1], (~ALU_cont[1])&ALU_cont[0]}), .A(A[7:4]), .B(B[7:4]), .Cin(carry), .X(X_pre[7:4]), .Zero(z1), .Cout(Cout), .Overflow(ov[0]));
+	ALU lsb(.ALU_cont({ALU_cont[3:1], (~ALU_cont[1])&ALU_cont[0]}), .A(A[3:0]), .B(B[3:0]), .Cin(Cin^(ALU_cont[3]|ALU_cont[2])), .X(X_pre[3:0]), .Zero(z0), .Cout(carry), .Overflow(ov[0])); 
+	ALU msb(.ALU_cont({ALU_cont[3:1], (~ALU_cont[1])&ALU_cont[0]}), .A(A[7:4]), .B(B[7:4]), .Cin(carry), .X(X_pre[7:4]), .Zero(z1), .Cout(Cout), .Overflow(ov[1]));
 
 	assign slt = A[7]^B[7] ?
 			(ALU_cont[2] & A[7]) | (ALU_cont[3] & B[7]) :
 			X_pre[7];
+	assign Overflow = ov[1];
 	assign X = (ALU_cont[1]&ALU_cont[0]) ? {7'b0, slt} : X_pre;
 endmodule

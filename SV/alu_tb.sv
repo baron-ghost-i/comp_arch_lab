@@ -19,7 +19,7 @@ module alu_tb();
 		end
 	end
 
-	ALU dut(.A(a), .B(b), .ALU_cont(aluop), .Cin(1'b0), .X(res), .Cout(cout), .Zero(zero), .Overflow(ov));
+	ALU dut(.A(a), .B(b), .ALU_cont(aluop), .Cin(aluop[3]|aluop[2]), .X(res), .Cout(cout), .Zero(zero), .Overflow(ov));
 
 	always @(posedge clk) begin
 		a <= $random()%16;
