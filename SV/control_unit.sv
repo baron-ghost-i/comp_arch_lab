@@ -1,15 +1,15 @@
 `timescale 1ns/1ps
 
 module control_unit (
-    input 			Ctrl1, Ctrl0,
-    input		[3:0]	A, B,
-    output logic	[3:0]	ResL, ResH,
-    output logic		Zero, Overflow, Cout
+    input Ctrl1, Ctrl0,
+    input [3:0] A, B,
+    output logic [3:0] ResL, ResH,
+    output logic Zero, Overflow, Cout
 );
     /*
         CU operations:
-        00 - A+B	01 - A-B
-        10 - A*B	11 - A&B
+        00 - A+B    01 - A-B
+        10 - A*B    11 - A&B
     */
     wire [7:0] res_mult;
     wire [3:0] res_alu;

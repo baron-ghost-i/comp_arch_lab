@@ -7,13 +7,13 @@ module alu_tb();
     wire signed [3:0] res;
     wire cout, ov, zero;
 
-    initial begin	
+    initial begin
         forever begin
             #0.5 clk = ~clk;
         end
     end
 
-    initial begin	
+    initial begin
         forever begin
             #4 aluop = aluop+1;
         end

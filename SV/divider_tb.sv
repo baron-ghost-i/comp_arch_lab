@@ -25,7 +25,7 @@ module divider_tb();
                 divisor = i;
                 dividend = j;
                 @(posedge clk); rst = 1'b0;
-                @(posedge clk);	rst = 1'b1;
+                @(posedge clk); rst = 1'b1;
                 wait(done);
                 $display("Divisor: %d\tDividend: %d\tQuotient: %d\tRemainder: %d\tError: %b\tDone: %b", divisor, dividend, quotient, remainder, error, done);
             end

@@ -3,16 +3,16 @@
 module ALU_8bit (
     /*
     * ALU Control Ops:
-        0000 - A&B	0001 - A|B	0010 - A+B	0011 - ignored
-        0100 - A&(~B)	0101 - A|~B	0110 - A-B	0111 - A<B
-        1000 - (~A)&B	1001 - ~A|B	1010 - B-A	1011 - A>B
-        1100 - ~(A|B)	1101 - ~(A&B)	1110 - 2-(B+A)	1111 - ignored
+        0000 - A&B      0001 - A|B      0010 - A+B      0011 - ignored
+        0100 - A&(~B)   0101 - A|~B     0110 - A-B      0111 - A<B
+        1000 - (~A)&B   1001 - ~A|B     1010 - B-A      1011 - A>B
+        1100 - ~(A|B)   1101 - ~(A&B)   1110 - 2-(B+A)  1111 - ignored
     */
-    input	[3:0]	ALU_cont,
-    input	[7:0]	A, B,
-    input		Cin,
-    output	[7:0] 	X,
-    output		Zero, Overflow, Cout
+    input [3:0] ALU_cont,
+    input [7:0] A, B,
+    input Cin,
+    output [7:0] X,
+    output Zero, Overflow, Cout
 );
 
     wire z0, z1, carry, slt;
