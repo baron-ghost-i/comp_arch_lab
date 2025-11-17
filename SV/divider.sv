@@ -47,7 +47,7 @@ module divider #(
 
     // division logic
     RCA_SUB #(.N(2*N)) subtractor (.A(remainder), .B(dvsr), .Bin(1'b0), .D(temp), .Bout(temp_bit));
-    always @(posedge clk or negedge rst) begin
+    always @(posedge clk) begin
         if(en) begin
             quotient <= {quotient[N-2:0], ~temp_bit};
             remainder <= (temp_bit)?(remainder):(temp);
