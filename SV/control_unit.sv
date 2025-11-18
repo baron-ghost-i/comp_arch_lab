@@ -13,6 +13,10 @@ module control_unit (
     */
     wire [7:0] res_mult;
     wire [7:0] res_alu;
+    wire z, ov, cout;
+    assign Zero = ~|{ResH, ResL};
+    assign Cout = (~Ctrl1)&cout;
+    assign Overflow = (~Ctrl1)&ov;
     ALU_8bit alu(
         /* We will use ALU for AND and add/sub ops.
            - For all cases, A is not inverted, thus ALU_cont[3] = 0
@@ -22,7 +26,7 @@ module control_unit (
         */
         .ALU_cont({1'b0, Ctrl0&(~Ctrl1), (~Ctrl1), 1'b0}),
         .A({{4{A[3]}}, A}), .B({{4{B[3]}}, B}), .Cin(1'b0),
-        .X(res_alu), .Zero(Zero), .Overflow(Overflow), .Cout(Cout)
+        .X(res_alu), .Zero(z), .Overflow(ov), .Cout(cout)
     );
     signedMultiplier mult(.A(A), .B(B), .P(res_mult));
     assign ResL = Ctrl1&(~Ctrl0) ? res_mult[3:0] : res_alu;
