@@ -26,5 +26,5 @@ module control_unit (
     );
     signedMultiplier mult(.A(A), .B(B), .P(res_mult));
     assign ResL = Ctrl1&(~Ctrl0) ? res_mult[3:0] : res_alu;
-    MUX_4_1 mux(.I0({4{Cout}}), .I1({4{Cout}}), .I2(res_mult[7:4]), .I3(4'b0), .S({Ctrl1, Ctrl0}), .Y(ResH));
+    MUX_4_1 mux(.I0({4{res_alu[3]}}), .I1({4{res_alu[3]}}), .I2(res_mult[7:4]), .I3(4'b0), .S({Ctrl1, Ctrl0}), .Y(ResH));
 endmodule
